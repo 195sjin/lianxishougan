@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface State {
-    String message() default "state参数的值只能是已发布或者草稿";
+    String message() default "state参数的值是已发布、草稿、待审批、审批成功、审批失败";
 
     Class<?>[] groups() default {};
 

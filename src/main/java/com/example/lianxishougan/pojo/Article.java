@@ -21,10 +21,11 @@ public class Article {
     @URL
     private String coverImg;//封面图像
     @State
-    private String state;//发布状态 已发布|草稿
+    private String state;//发布状态 已发布|草稿|待审批|审批成功|审批失败
     @NotNull
     private Integer categoryId;//文章分类id
     private Integer createUser;//创建人ID
+    private String advice;
     private LocalDateTime createTime;//创建时间
     private LocalDateTime updateTime;//更新时间
 }
