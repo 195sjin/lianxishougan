@@ -21,4 +21,7 @@ public interface ArticleMapper {
 
     @Delete("delete from article where id=#{id}")
     void delete(Integer id);
+
+    @Select("select * from article")
+    List<Article> listAll();
 }

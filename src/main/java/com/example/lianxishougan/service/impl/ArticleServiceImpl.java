@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -42,7 +43,14 @@ public class ArticleServiceImpl implements ArticleService {
 
         Map<String,Object> map = ThreadLocalUtil.get();
         Integer userId= (Integer) map.get("id");
-        List<Article> as=articleMapper.list(userId,categoryId,state);
+        Integer isAdmin= (Integer) map.get("is_admin");
+        List<Article> as;
+        if(isAdmin==1){
+            as=articleMapper.listAll();
+        }else{
+            as=articleMapper.list(userId,categoryId,state);
+        }
+
         Page<Article> p=(Page<Article>) as;
 
         pb.setTotal(p.getTotal());
