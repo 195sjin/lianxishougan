@@ -4,8 +4,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 @Data
-public class ArticleInfo {
-    private Article article;
+public class ArticleInfo extends Article {
     private String userName;
 
 }

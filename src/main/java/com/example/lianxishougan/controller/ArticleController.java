@@ -1,6 +1,7 @@
 package com.example.lianxishougan.controller;
 
 import com.example.lianxishougan.pojo.Article;
+import com.example.lianxishougan.pojo.ArticleInfo;
 import com.example.lianxishougan.pojo.PageBean;
 import com.example.lianxishougan.pojo.Result;
 import com.example.lianxishougan.service.ArticleService;
@@ -25,11 +26,11 @@ public class ArticleController {
         return Result.success();
     }
     @GetMapping
-    public Result<PageBean<Article>> list(Integer pageNum,
-                                          Integer pageSize,
-                                          @RequestParam(required = false) Integer categoryId,
-                                          @RequestParam(required = false) String state){
-        PageBean<Article> pb=articleService.list(pageNum,pageSize,categoryId,state);
+    public Result<PageBean<ArticleInfo>> list(Integer pageNum,
+                                              Integer pageSize,
+                                              @RequestParam(required = false) Integer categoryId,
+                                              @RequestParam(required = false) String state){
+        PageBean<ArticleInfo> pb=articleService.list(pageNum,pageSize,categoryId,state);
         return Result.success(pb);
     }
     @GetMapping("/detail")
@@ -46,6 +47,13 @@ public class ArticleController {
     @DeleteMapping
     public Result delete(Integer id){
         articleService.delete(id);
+        return Result.success();
+    }
+
+    //文章建议
+    @PutMapping("/advice")
+    public Result advice(Integer id,String state,String advice){
+        articleService.advice(id,state,advice);
         return Result.success();
     }
 }
