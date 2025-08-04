@@ -26,6 +26,7 @@ public class Admin {
     private String email;//邮箱
 
     private String userPic;//用户头像地址
+    private Integer isAdmin;
     private LocalDateTime createTime;//创建时间
     private LocalDateTime updateTime;//更新时间
 }

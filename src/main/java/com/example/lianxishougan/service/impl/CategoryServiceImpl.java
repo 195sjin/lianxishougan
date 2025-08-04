@@ -32,6 +32,10 @@ public class CategoryServiceImpl implements CategoryService {
 
         Map<String,Object> map = ThreadLocalUtil.get();
         Integer id= (Integer) map.get("id");
+        Integer isAdmin = (Integer) map.get("is_admin");
+        if(isAdmin==1){
+            return categoryMapper.listAll();
+        }
         return categoryMapper.list(id);
     }
 

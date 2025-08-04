@@ -5,8 +5,12 @@ import com.example.lianxishougan.pojo.Admin;
 import com.example.lianxishougan.pojo.User;
 import com.example.lianxishougan.service.AdminService;
 import com.example.lianxishougan.utils.Md5Util;
+import com.example.lianxishougan.utils.ThreadLocalUtil;
 import jakarta.annotation.Resource;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.Map;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -24,5 +28,26 @@ public class AdminServiceImpl implements AdminService {
     public Admin findByName(String username) {
         Admin admin = adminMapper.findByName(username);
         return admin;
+    }
+
+
+    @Override
+    public void update(Admin admin) {
+        admin.setUpdateTime(LocalDateTime.now());
+        adminMapper.update(admin);
+    }
+
+    @Override
+    public void updateAvatar(String avatarUrl) {
+        Map<String,Object> map = ThreadLocalUtil.get();
+        Integer id = (Integer) map.get("id");
+        adminMapper.updateAvatar(avatarUrl,id);
+    }
+
+    @Override
+    public void updatePwd(String newPwd) {
+        Map<String,Object> map = ThreadLocalUtil.get();
+        Integer id = (Integer) map.get("id");
+        adminMapper.updatePwd(Md5Util.getMD5String(newPwd),id);
     }
 }

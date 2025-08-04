@@ -7,11 +7,13 @@ import com.example.lianxishougan.service.AdminService;
 import com.example.lianxishougan.service.UserService;
 import com.example.lianxishougan.utils.JwtUtil;
 import com.example.lianxishougan.utils.Md5Util;
+import com.example.lianxishougan.utils.ThreadLocalUtil;
 import jakarta.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.util.StringUtils;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,9 +53,57 @@ public class AdminController {
             Map<String,Object> map = new HashMap<>();
             map.put("id",admin.getId());
             map.put("username",admin.getUsername());
+            map.put("is_admin",admin.getIsAdmin());
+            System.out.println("======================================================="+admin.getIsAdmin());
             String token = JwtUtil.genToken(map);
             return Result.success(token);
         }
         return Result.error("密码错误");
+    }
+
+
+    @GetMapping("/adminInfo")
+    public Result<Admin> adminInfo(/*@RequestHeader(name = "Authorization") String token*/){
+        Map<String, Object> map = ThreadLocalUtil.get();
+        String username = (String) map.get("username");
+        Admin admin = adminService.findByName(username);
+        return Result.success(admin);
+    }
+
+    @PutMapping("/update")
+    public Result upadte(@RequestBody @Validated Admin admin){
+        adminService.update(admin);
+        return Result.success();
+    }
+
+    @PatchMapping("/updateAvatar")
+    public Result updateAvatar(@RequestParam @URL String avatarUrl){
+        adminService.updateAvatar(avatarUrl);
+        return Result.success();
+    }
+
+    @PatchMapping("/updatePwd")
+    public Result updatePwd(@RequestBody Map<String,String> params){
+        String oldPwd = params.get("old_Pwd");
+        String newPwd = params.get("new_Pwd");
+        String rePwd  = params.get("re_Pwd");
+
+        if (!StringUtils.hasLength(oldPwd) || !StringUtils.hasLength(newPwd) || !StringUtils.hasLength(rePwd)){
+            return Result.error("缺少必要的参数");
+        }
+
+        Map<String,Object> map = ThreadLocalUtil.get();
+        String username = (String) map.get("username");
+        Admin admin = adminService.findByName(username);
+        if (!admin.getPassword().equals(Md5Util.getMD5String(oldPwd))){
+            return Result.error("原密码不正确");
+        }
+
+        if (!rePwd.equals(newPwd)){
+            return Result.error("两次填写的密码不一样");
+        }
+
+        adminService.updatePwd(newPwd);
+        return Result.success();
     }
 }
