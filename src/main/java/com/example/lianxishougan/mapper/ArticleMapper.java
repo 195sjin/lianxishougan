@@ -12,7 +12,11 @@ public interface ArticleMapper {
     "values (#{title},#{content},#{coverImg},#{state},#{categoryId},#{createUser},#{createTime},#{updateTime})")
     void add(Article article);
 
-    List<ArticleInfo> list(Integer userId, Integer categoryId, String state);
+    @Select("SELECT a.*" +
+            "FROM article a " +
+            "WHERE create_user=#{userId} and (a.state = '待审批' or a.state='草稿') " +  // 补全单引号，并用空格分隔条件与排序
+            "ORDER BY a.create_time DESC")
+    List<ArticleInfo> list(Integer userId);
 
     @Select("select * from article where id=#{id}")
     Article findById(Integer id);
@@ -46,6 +50,9 @@ public interface ArticleMapper {
     List<ArticleInfo> listAllWithUserAdvice();
 
     //用户查看自己已经被审批过的作品
-
-    List<ArticleInfo> listAllAdviceUser(Integer userId, Integer categoryId, String state);
+    @Select("SELECT a.*" +
+            "FROM article a " +
+            "WHERE create_user=#{userId} and (a.state = '审批成功' or a.state='审批失败') " +  // 补全单引号，并用空格分隔条件与排序
+            "ORDER BY a.create_time DESC")
+    List<ArticleInfo> listAllAdviceUser(Integer userId);
 }
