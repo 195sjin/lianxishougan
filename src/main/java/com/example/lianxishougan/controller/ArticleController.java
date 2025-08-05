@@ -52,8 +52,14 @@ public class ArticleController {
 
     //文章建议
     @PutMapping("/advice")
-    public Result advice(Integer id,String state,String advice){
-        articleService.advice(id,state,advice);
+    public Result advice(@RequestBody Map<String, Object> params) {
+        // 从Map中获取参数
+        Integer id = params.get("id") != null ? Integer.parseInt(params.get("id").toString()) : null;
+        String state = params.get("state") != null ? params.get("state").toString() : null;
+        String advice = params.get("advice") != null ? params.get("advice").toString() : null;
+
+        // 调用服务层方法
+        articleService.advice(id, state, advice);
         return Result.success();
     }
 }
