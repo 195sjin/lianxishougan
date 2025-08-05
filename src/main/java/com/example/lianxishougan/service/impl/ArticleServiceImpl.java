@@ -95,4 +95,38 @@ public class ArticleServiceImpl implements ArticleService {
     public void advice(Integer id, String state, String advice) {
         articleMapper.advice(id,state,advice);
     }
+
+    @Override
+    public PageBean<ArticleInfo> listAllAdvice(Integer pageNum, Integer pageSize, Integer categoryId, String state) {
+        PageBean<ArticleInfo> pb = new PageBean<>();
+        PageBean<ArticleInfo> pc = new PageBean<>();
+
+        PageHelper.startPage(pageNum, pageSize);
+
+        Map<String, Object> map = ThreadLocalUtil.get();
+        Integer userId = (Integer) map.get("id");
+        Integer isAdmin = (Integer) map.get("is_admin");
+
+        if (isAdmin == 1) {
+            // PageHelper 对后续第一个查询生效，返回的 list 实际是 Page 类型
+            List<ArticleInfo> asi = articleMapper.listAllWithUserAdvice();
+            // 强制转换为 Page 类型（安全，因为 PageHelper 会代理查询）
+            Page<ArticleInfo> pa = (Page<ArticleInfo>) asi;
+
+            pc.setTotal(pa.getTotal());
+            pc.setItems(pa.getResult());
+            return pc;
+
+
+        } else {
+            // 非管理员查询：只查自己的文章
+            List<ArticleInfo> articleList = articleMapper.listAllAdviceUser(userId, categoryId, state);
+            // 转换为 Page 类型（PageHelper 代理后的结果）
+            Page<ArticleInfo> articlePage = (Page<ArticleInfo>) articleList;
+
+            pb.setTotal(articlePage.getTotal());
+            pb.setItems(articlePage.getResult());
+            return pb;
+        }
+    }
 }

@@ -36,4 +36,16 @@ public interface ArticleMapper {
 
     @Update("update article set state=#{state},advice=#{advice} where id=#{id}")
     void advice(Integer id,String state, String advice);
+
+    //管理员查询已经审批过的数据
+    @Select("SELECT a.*, u.username " +
+            "FROM article a " +
+            "LEFT JOIN user u ON a.create_user = u.id " +
+            "WHERE a.state = '审批成功' or a.state='审批失败' " +  // 补全单引号，并用空格分隔条件与排序
+            "ORDER BY a.create_time DESC")
+    List<ArticleInfo> listAllWithUserAdvice();
+
+    //用户查看自己已经被审批过的作品
+
+    List<ArticleInfo> listAllAdviceUser(Integer userId, Integer categoryId, String state);
 }

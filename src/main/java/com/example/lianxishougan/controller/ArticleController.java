@@ -62,4 +62,14 @@ public class ArticleController {
         articleService.advice(id, state, advice);
         return Result.success();
     }
+
+    //获取所有的已经审批过的文章
+    @GetMapping("/adviceAll")
+    public Result<PageBean<ArticleInfo>> listAllAdvice(Integer pageNum,
+                                              Integer pageSize,
+                                              @RequestParam(required = false) Integer categoryId,
+                                              @RequestParam(required = false) String state){
+        PageBean<ArticleInfo> pb = articleService.listAllAdvice(pageNum, pageSize, categoryId, state);
+        return Result.success(pb);
+    }
 }

@@ -16,4 +16,6 @@ public interface ArticleService {
     void delete(Integer id);
 
     void advice(Integer id, String state,String advice);
+
+    PageBean<ArticleInfo> listAllAdvice(Integer pageNum, Integer pageSize, Integer categoryId, String state);
 }
