@@ -16,7 +16,7 @@ public class Article {
     @Pattern(regexp = "^\\S{1,10}$")
     private String title;//作品标题
     @NotEmpty
-    private String content;//作品内容
+    private String content;//作品描述
     @NotEmpty
     @URL
     private String coverImg;//封面图像
