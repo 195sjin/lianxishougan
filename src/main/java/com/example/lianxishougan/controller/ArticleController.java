@@ -50,7 +50,7 @@ public class ArticleController {
         return Result.success();
     }
 
-    //文章建议
+    //作品建议
     @PutMapping("/advice")
     public Result advice(@RequestBody Map<String, Object> params) {
         // 从Map中获取参数
@@ -63,7 +63,7 @@ public class ArticleController {
         return Result.success();
     }
 
-    //获取所有的已经审批过的文章
+    //获取所有的已经审批过的作品
     @GetMapping("/adviceAll")
     public Result<PageBean<ArticleInfo>> listAllAdvice(Integer pageNum,
                                               Integer pageSize,

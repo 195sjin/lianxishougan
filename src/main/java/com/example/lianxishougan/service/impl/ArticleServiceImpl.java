@@ -62,7 +62,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 
         }else{
-            // 非管理员查询：只查自己的文章
+            // 非管理员查询：只查自己的作品
             List<ArticleInfo> articleList = articleMapper.list(userId);
             // 转换为 Page 类型（PageHelper 代理后的结果）
             Page<ArticleInfo> articlePage = (Page<ArticleInfo>) articleList;
@@ -119,7 +119,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 
         } else {
-            // 非管理员查询：只查自己的文章
+            // 非管理员查询：只查自己的作品
             List<ArticleInfo> articleList = articleMapper.listAllAdviceUser(userId);
             // 转换为 Page 类型（PageHelper 代理后的结果）
             Page<ArticleInfo> articlePage = (Page<ArticleInfo>) articleList;

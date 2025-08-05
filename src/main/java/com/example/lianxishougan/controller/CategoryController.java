@@ -39,7 +39,7 @@ public class CategoryController {
         return Result.success();
     }
 
-    //删除文章分类
+    //删除作品分类
     @DeleteMapping
     public Result delete(Integer id){
         categoryService.deleteById(id);
