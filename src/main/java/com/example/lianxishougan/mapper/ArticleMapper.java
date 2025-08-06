@@ -27,18 +27,15 @@ public interface ArticleMapper {
     @Delete("delete from article where id=#{id}")
     void delete(Integer id);
 
-    @Select("select * from article")
-    List<Article> listAll();
-
     // 管理员查询：关联用户表，一次性获取用户名
     @Select("SELECT a.*, u.username " +
             "FROM article a " +
             "LEFT JOIN user u ON a.create_user = u.id " +
             "WHERE a.state = '待审批' " +  // 补全单引号，并用空格分隔条件与排序
-            "ORDER BY a.create_time DESC")
+            "ORDER BY a.update_time DESC")
     List<ArticleInfo> listAllWithUser();
 
-    @Update("update article set state=#{state},advice=#{advice} where id=#{id}")
+    @Update("update article set state=#{state},advice=#{advice},update_time=now(),where id=#{id}")
     void advice(Integer id,String state, String advice);
 
     //管理员查询已经审批过的数据
@@ -46,7 +43,7 @@ public interface ArticleMapper {
             "FROM article a " +
             "LEFT JOIN user u ON a.create_user = u.id " +
             "WHERE a.state = '审批成功' or a.state='审批失败' " +  // 补全单引号，并用空格分隔条件与排序
-            "ORDER BY a.create_time DESC")
+            "ORDER BY a.update_time DESC")
     List<ArticleInfo> listAllWithUserAdvice();
 
     //用户查看自己已经被审批过的作品

@@ -21,6 +21,7 @@
 
             and create_user = #{userId}
         </where>
+        ORDER BY update_time DESC
     </select>
 
     <select id="listAllAdviceUser" resultType="com.example.lianxishougan.pojo.Article">
@@ -41,6 +42,7 @@
 
             and create_user = #{userId}
         </where>
+        ORDER BY update_time DESC
     </select>
 
 </mapper>
