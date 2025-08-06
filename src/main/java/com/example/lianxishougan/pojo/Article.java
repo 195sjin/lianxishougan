@@ -21,7 +21,7 @@ public class Article {
     @URL
     private String coverImg;//封面图像
     @State
-    private String state;//发布状态 已发布|草稿|待审批|审批成功|审批失败
+    private String state;//发布状态 草稿|待审批|审批成功|审批失败
     @NotNull
     private Integer categoryId;//作品分类id
     private Integer createUser;//创建人ID
