@@ -35,7 +35,7 @@ public interface ArticleMapper {
             "ORDER BY a.update_time DESC")
     List<ArticleInfo> listAllWithUser();
 
-    @Update("update article set state=#{state},advice=#{advice},update_time=now(),where id=#{id}")
+    @Update("update article set state=#{state},advice=#{advice},update_time=now() where id=#{id}")
     void advice(Integer id,String state, String advice);
 
     //管理员查询已经审批过的数据
